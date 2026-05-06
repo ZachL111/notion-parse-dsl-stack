@@ -1,0 +1,17 @@
+{
+  "repo": "notion-parse-dsl-stack",
+  "thresholds": {
+    "signal": 3,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 4,
+    "ship": 172,
+    "watch": 100
+  },
+  "terms": [
+    "token drift",
+    "grammar width",
+    "label quality",
+    "error locality"
+  ]
+}
