@@ -1,0 +1,73 @@
+{
+  "repo": "notion-parse-dsl-stack",
+  "language": "Ruby",
+  "category": "Parsers",
+  "goal": "Implement a Ruby parsers project for dsl simulation kernel, using seeded input scenarios and deterministic summary checks.",
+  "review_model": {
+    "terms": [
+      "token drift",
+      "grammar width",
+      "label quality",
+      "error locality"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "token drift",
+      "signal": 47,
+      "slack": 50,
+      "drag": 29,
+      "confidence": 92,
+      "score": 149,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "grammar width",
+      "signal": 49,
+      "slack": 43,
+      "drag": 28,
+      "confidence": 94,
+      "score": 151,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "label quality",
+      "signal": 72,
+      "slack": 32,
+      "drag": 32,
+      "confidence": 69,
+      "score": 149,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "error locality",
+      "signal": 72,
+      "slack": 42,
+      "drag": 30,
+      "confidence": 76,
+      "score": 172,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "token drift",
+      "signal": 90,
+      "slack": 49,
+      "drag": 32,
+      "confidence": 90,
+      "score": 223,
+      "lane": "ship"
+    }
+  ]
+}

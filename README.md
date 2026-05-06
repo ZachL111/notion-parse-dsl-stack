@@ -1,68 +1,40 @@
 # notion-parse-dsl-stack
 
-`notion-parse-dsl-stack` explores parsers in Ruby. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`notion-parse-dsl-stack` is a Ruby project in parsers. Its focus is to implement a Ruby parsers project for dsl simulation kernel, using seeded input scenarios and deterministic summary checks.
 
-## Notion Parse Dsl Stack Notes
+## Problem It Tries To Make Smaller
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how token drift and label quality should influence a review result.
 
-## Implementation Notes
+## Notion Parse Dsl Stack Review Notes
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying parsers behavior without needing a service or database unless the language project itself is SQL. The Ruby code keeps the module small and leans on Minitest for direct fixture checks.
+Start with `token drift` and `token drift`. Those cases create the widest score spread in this repo, so they are the best quick check when the model changes.
 
-## Why This Exists
+## Working Pieces
 
-The goal is to capture the core behavior in code and make the surrounding assumptions obvious. A reader should be able to run the verifier, open the fixtures, and understand why each decision was made.
+- `fixtures/domain_review.csv` adds cases for token drift and grammar width.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/notion-parse-dsl-walkthrough.md` walks through the case spread.
+- The Ruby code includes a review path for `token drift` and `token drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Feature Notes
+## Design Notes
 
-- Uses fixture data to keep error labels changes visible in code review.
-- Includes extended examples for grammar boundaries, including `surge` and `degraded`.
-- Documents golden examples tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
+The repository has two validation layers: the original compact policy fixture and the domain review fixture. They are separate so one can change without hiding failures in the other.
 
-## Example Scenarios
+The Ruby addition stays small enough to inspect in one sitting.
 
-`recovery` is the first example I would inspect because it lands on the `accept` path with a score of 185. The broader file also keeps `degraded` at -76 and `surge` at 212, which gives the model a useful low-to-high spread.
-
-## Code Tour
-
-- `lib`: library code
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Local Setup
-
-Clone the repository, enter the directory, and run the verifier. No database server, cloud account, or token is required.
-
-## Try It
+## Example Run
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
-
 ## Tests
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+The same command runs the local verification path. The highest-scoring domain case is `stale` at 223, which lands in `ship`. The most cautious case is `baseline` at 149, which lands in `ship`.
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
+## Known Limits
 
-## Boundaries
-
-This code is local-first. It makes no claim about deployed usage and avoids credentials, hosted state, and environment-specific setup.
-
-## Roadmap
-
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Add one more parsers fixture that focuses on a malformed or borderline input.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
